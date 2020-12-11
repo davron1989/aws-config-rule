@@ -36,7 +36,7 @@ resource "aws_config_configuration_recorder" "my-config" {
 resource "aws_config_delivery_channel" "my-config" {
   name           = "config-example"
   s3_bucket_name = "${aws_s3_bucket.my-config.bucket}"
-  sns_topic_arn = "arn:aws:sns:us-west-1:137959540993:config-s3-complience"
+  sns_topic_arn = aws_cloudformation_stack.sns-topic.outputs["ARN"] # "arn:aws:sns:us-west-1:137959540993:config-s3-complience"
 
   depends_on = ["aws_config_configuration_recorder.my-config"]
 }
@@ -67,13 +67,13 @@ resource "aws_config_config_rule" "s3-bucket-server-side-encryption-enabled" {
 
 resource "aws_s3_bucket" "my-config" {
   bucket = "config-bucket-for-my-test-project3"
-#  acl    = "private"
+  acl    = "private"
 
-//   versioning {
-//     enabled = true
-//   }
+  versioning {
+    enabled = true
+  }
 
-//   lifecycle {
-//     prevent_destroy = true
-//   }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
