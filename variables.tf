@@ -33,3 +33,7 @@ variable "stack_name" {
   default     = "tf-sns-email"
 }
 
+variable "policy_arn" {
+  type = "list"
+}
+

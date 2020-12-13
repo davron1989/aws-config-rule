@@ -20,7 +20,8 @@ POLICY
 
 resource "aws_iam_role_policy_attachment" "my-config" {
   role       = "${aws_iam_role.my-config.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSConfigRole"
+  count      = "${length(var.policy_arn)}"
+  policy_arn = "${var.policy_arn[count.index]}"
 }
 
 resource "aws_config_configuration_recorder" "my-config" {
@@ -36,7 +37,7 @@ resource "aws_config_configuration_recorder" "my-config" {
 resource "aws_config_delivery_channel" "my-config" {
   name           = "config-example"
   s3_bucket_name = "${aws_s3_bucket.my-config.bucket}"
-  sns_topic_arn = aws_cloudformation_stack.sns-topic.outputs["ARN"] # "arn:aws:sns:us-west-1:137959540993:config-s3-complience"
+  sns_topic_arn = aws_cloudformation_stack.sns-topic.outputs["ARN"]
 
   depends_on = ["aws_config_configuration_recorder.my-config"]
 }
@@ -73,9 +74,9 @@ resource "aws_s3_bucket" "my-config" {
     enabled = true
   }
 
-  lifecycle {
-    prevent_destroy = true
-  }
+  // lifecycle {
+  //   prevent_destroy = true
+  // }
 }
 
 
