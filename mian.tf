@@ -107,12 +107,12 @@ resource "aws_cloudformation_stack" "sns-topic" {
   name          = var.stack_name
   template_body = data.template_file.cloudformation_sns_stack.rendered
 
-  tags = merge(
-    local.default_tags,
-    var.additional_tags,
-    {
-      "Name" = var.stack_name
-    },
-  )
+  // tags = merge(
+  //   local.default_tags,
+  //   var.additional_tags,
+  //   {
+  //     "Name" = var.stack_name
+  //   },
+  // )
 }
 
